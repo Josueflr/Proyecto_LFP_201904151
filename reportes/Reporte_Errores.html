@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Reporte de Errores Léxicos — LigaBot</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f2f5;color:#222}
+  header{background:#1a3a5c;color:#fff;padding:16px 28px;display:flex;align-items:center;gap:16px}
+  header h1{font-size:1.2rem;font-weight:600}
+  header span{font-size:.85rem;color:#aac4e0}
+  main{padding:28px;max-width:1100px;margin:0 auto}
+  h2{color:#1a3a5c;margin-bottom:6px;font-size:1.3rem}
+  .meta{color:#888;font-size:.85rem;margin-bottom:20px}
+  table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;
+         overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.08);margin-top:12px}
+  thead tr{background:#1a3a5c;color:#fff}
+  th,td{padding:11px 15px;text-align:left;border-bottom:1px solid #e8ecf0;font-size:.9rem}
+  tbody tr:hover{background:#f7f9fc}
+  tbody tr:last-child td{border-bottom:none}
+  .lex{font-family:'Consolas',monospace;color:#c0392b;font-size:.88rem}
+  .tok{font-family:'Consolas',monospace;color:#2471a3;font-weight:600;font-size:.88rem}
+  .desc{color:#922b21;font-size:.88rem}
+  .num{color:#555;text-align:center;width:48px}
+  .pos{color:#555;text-align:center}
+  .empty{background:#fff;border-radius:8px;padding:24px;color:#27ae60;font-size:1rem;
+          box-shadow:0 2px 8px rgba(0,0,0,.08);margin-top:12px}
+</style>
+</head>
+<body>
+<header>
+  <h1>LigaBot</h1>
+  <span>Análisis Léxico — Fase 1</span>
+</header>
+<main>
+        <h2>Reporte de Errores Léxicos</h2>
+        <p class="meta">Generado: 2026-06-20 13:28:27 &nbsp;|&nbsp; Total de errores: <strong>22</strong></p>
+        <table>
+          <thead>
+            <tr><th>#</th><th>Lexema</th><th>Descripción del error</th><th>Fila</th><th>Columna</th></tr>
+          </thead>
+          <tbody><tr><td class='num'>1</td><td class='lex'>EQUIPO</td><td class='desc'>Palabra no reconocida: 'EQUIPO' (¿olvidó comillas o hay un error de escritura?)</td><td class='pos'>1</td><td class='pos'>1</td></tr><tr><td class='num'>2</td><td class='lex'>-x</td><td class='desc'>Bandera no reconocida: '-x'</td><td class='pos'>1</td><td class='pos'>29</td></tr><tr><td class='num'>3</td><td class='lex'>$</td><td class='desc'>Carácter no reconocido: '$'</td><td class='pos'>1</td><td class='pos'>11</td></tr><tr><td class='num'>4</td><td class='lex'>@</td><td class='desc'>Carácter no reconocido: '@'</td><td class='pos'>1</td><td class='pos'>28</td></tr><tr><td class='num'>5</td><td class='lex'>-k</td><td class='desc'>Bandera no reconocida: '-k'</td><td class='pos'>1</td><td class='pos'>1</td></tr><tr><td class='num'>6</td><td class='lex'>-m</td><td class='desc'>Bandera no reconocida: '-m'</td><td class='pos'>2</td><td class='pos'>1</td></tr><tr><td class='num'>7</td><td class='lex'>-o</td><td class='desc'>Bandera no reconocida: '-o'</td><td class='pos'>3</td><td class='pos'>1</td></tr><tr><td class='num'>8</td><td class='lex'>-p</td><td class='desc'>Bandera no reconocida: '-p'</td><td class='pos'>4</td><td class='pos'>1</td></tr><tr><td class='num'>9</td><td class='lex'>-q</td><td class='desc'>Bandera no reconocida: '-q'</td><td class='pos'>5</td><td class='pos'>1</td></tr><tr><td class='num'>10</td><td class='lex'>-r</td><td class='desc'>Bandera no reconocida: '-r'</td><td class='pos'>6</td><td class='pos'>1</td></tr><tr><td class='num'>11</td><td class='lex'>-s</td><td class='desc'>Bandera no reconocida: '-s'</td><td class='pos'>7</td><td class='pos'>1</td></tr><tr><td class='num'>12</td><td class='lex'>-t</td><td class='desc'>Bandera no reconocida: '-t'</td><td class='pos'>8</td><td class='pos'>1</td></tr><tr><td class='num'>13</td><td class='lex'>-u</td><td class='desc'>Bandera no reconocida: '-u'</td><td class='pos'>9</td><td class='pos'>1</td></tr><tr><td class='num'>14</td><td class='lex'>-v</td><td class='desc'>Bandera no reconocida: '-v'</td><td class='pos'>10</td><td class='pos'>1</td></tr><tr><td class='num'>15</td><td class='lex'>-w</td><td class='desc'>Bandera no reconocida: '-w'</td><td class='pos'>11</td><td class='pos'>1</td></tr><tr><td class='num'>16</td><td class='lex'>-x</td><td class='desc'>Bandera no reconocida: '-x'</td><td class='pos'>12</td><td class='pos'>1</td></tr><tr><td class='num'>17</td><td class='lex'>-y</td><td class='desc'>Bandera no reconocida: '-y'</td><td class='pos'>13</td><td class='pos'>1</td></tr><tr><td class='num'>18</td><td class='lex'>-z</td><td class='desc'>Bandera no reconocida: '-z'</td><td class='pos'>14</td><td class='pos'>1</td></tr><tr><td class='num'>19</td><td class='lex'>-jk</td><td class='desc'>Bandera no reconocida: '-jk'</td><td class='pos'>15</td><td class='pos'>1</td></tr><tr><td class='num'>20</td><td class='lex'>-jz</td><td class='desc'>Bandera no reconocida: '-jz'</td><td class='pos'>16</td><td class='pos'>1</td></tr><tr><td class='num'>21</td><td class='lex'>-ja</td><td class='desc'>Bandera no reconocida: '-ja'</td><td class='pos'>17</td><td class='pos'>1</td></tr><tr><td class='num'>22</td><td class='lex'>-</td><td class='desc'>Bandera incompleta al final del texto</td><td class='pos'>18</td><td class='pos'>1</td></tr></tbody>
+        </table></main>
+</body>
+</html>

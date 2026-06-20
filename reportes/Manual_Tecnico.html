@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Manual Técnico — LigaBot</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f2f5;color:#222}
+  header{background:#1a3a5c;color:#fff;padding:16px 28px;display:flex;align-items:center;gap:16px}
+  header h1{font-size:1.2rem;font-weight:600}
+  header span{font-size:.85rem;color:#aac4e0}
+  main{padding:28px;max-width:1100px;margin:0 auto}
+  h2{color:#1a3a5c;margin-bottom:6px;font-size:1.3rem}
+  .meta{color:#888;font-size:.85rem;margin-bottom:20px}
+  table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;
+         overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.08);margin-top:12px}
+  thead tr{background:#1a3a5c;color:#fff}
+  th,td{padding:11px 15px;text-align:left;border-bottom:1px solid #e8ecf0;font-size:.9rem}
+  tbody tr:hover{background:#f7f9fc}
+  tbody tr:last-child td{border-bottom:none}
+  .lex{font-family:'Consolas',monospace;color:#c0392b;font-size:.88rem}
+  .tok{font-family:'Consolas',monospace;color:#2471a3;font-weight:600;font-size:.88rem}
+  .desc{color:#922b21;font-size:.88rem}
+  .num{color:#555;text-align:center;width:48px}
+  .pos{color:#555;text-align:center}
+  .empty{background:#fff;border-radius:8px;padding:24px;color:#27ae60;font-size:1rem;
+          box-shadow:0 2px 8px rgba(0,0,0,.08);margin-top:12px}
+</style>
+</head>
+<body>
+<header>
+  <h1>LigaBot</h1>
+  <span>Análisis Léxico — Fase 1</span>
+</header>
+<main>
+<h2>Manual Técnico — LigaBot Fase 1</h2>
+<p class="meta">Descripción técnica del analizador léxico</p>
+
+<h3 style="color:#1a3a5c;margin:20px 0 8px">Requisitos del sistema</h3>
+<ul style="margin-left:20px;line-height:2">
+  <li>Python 3.8 o superior</li>
+  <li>Módulo <code>tkinter</code> (incluido en la instalación estándar de Python)</li>
+  <li>Sistema operativo: Windows, Linux o macOS</li>
+  <li>Navegador web para visualizar los reportes HTML</li>
+</ul>
+
+<h3 style="color:#1a3a5c;margin:20px 0 8px">Instrucciones de ejecución</h3>
+<pre style="background:#1e1e1e;color:#d4d4d4;padding:16px;border-radius:8px;font-size:.88rem">
+# Desde la carpeta del proyecto:
+python main.py
+</pre>
+
+<h3 style="color:#1a3a5c;margin:20px 0 8px">Estructura de archivos</h3>
+<table>
+<thead><tr><th>Archivo</th><th>Responsabilidad</th></tr></thead>
+<tbody>
+<tr><td><code>main.py</code></td>
+    <td>Punto de entrada. Crea la ventana Tkinter y lanza la GUI.</td></tr>
+<tr><td><code>lexer.py</code></td>
+    <td>Analizador léxico manual. Clases: <code>Lexer</code>, <code>Token</code>,
+    <code>LexicalError</code>, <code>TokenType</code>.</td></tr>
+<tr><td><code>reporter.py</code></td>
+    <td>Generador de reportes HTML para tokens y errores léxicos.</td></tr>
+<tr><td><code>metodo_arbol.py</code></td>
+    <td>Genera el HTML con el desarrollo formal del método del árbol.</td></tr>
+<tr><td><code>manual_generator.py</code></td>
+    <td>Genera los manuales HTML de usuario y técnico.</td></tr>
+<tr><td><code>gui.py</code></td>
+    <td>Interfaz gráfica con Tkinter.</td></tr>
+<tr><td><code>reportes/</code></td>
+    <td>Directorio de salida para todos los archivos HTML generados.</td></tr>
+</tbody>
+</table>
+
+<h3 style="color:#1a3a5c;margin:20px 0 8px">Diseño del Lexer (<code>lexer.py</code>)</h3>
+<p>El lexer implementa un <strong>autómata de estados finito manual</strong> que lee el
+texto de entrada carácter por carácter. El método principal es <code>analyze()</code>.</p>
+<table>
+<thead><tr><th>Método</th><th>Descripción</th></tr></thead>
+<tbody>
+<tr><td><code>analyze()</code></td>
+    <td>Ciclo principal. Despacha al método correcto según el primer carácter.</td></tr>
+<tr><td><code>_lex_string()</code></td>
+    <td>Reconoce cadenas entre comillas dobles. Error si no se cierra.</td></tr>
+<tr><td><code>_lex_flag()</code></td>
+    <td>Reconoce banderas: <code>-f</code>, <code>-n</code>, <code>-ji</code>,
+    <code>-jf</code>. Error para banderas no definidas.</td></tr>
+<tr><td><code>_lex_number_or_season()</code></td>
+    <td>Lee dígitos; decide si es NUMERO (1-2 d.) o TEMPORADA_VAL (AAAA-AAAA).
+    Backtracking simple si los 4 dígitos no van seguidos de 4 más.</td></tr>
+<tr><td><code>_lex_word()</code></td>
+    <td>Lee letras consecutivas y verifica si forman una palabra reservada
+    (insensible a mayúsculas). Error si no coincide con ningún keyword.</td></tr>
+</tbody>
+</table>
+
+<h3 style="color:#1a3a5c;margin:20px 0 8px">Registro de posición</h3>
+<p>El lexer mantiene las variables <code>self.fila</code> y <code>self.columna</code>.
+Cada llamada a <code>_advance()</code> actualiza ambas: si el carácter consumido es
+<code>\n</code>, la fila incrementa y la columna se reinicia a 1; en otro caso solo
+la columna incrementa.</p>
+
+<h3 style="color:#1a3a5c;margin:20px 0 8px">Flujo de datos</h3>
+<pre style="background:#1e1e1e;color:#d4d4d4;padding:16px;border-radius:8px;font-size:.88rem">
+Texto de entrada
+      │
+      ▼
+  Lexer.analyze()
+      │
+      ├──► Lista de Token(lexema, tipo, fila, col)
+      │
+      └──► Lista de LexicalError(lexema, desc, fila, col)
+                │                          │
+                ▼                          ▼
+      Reporte_Token.html       Reporte_Errores.html
+</pre>
+
+<h3 style="color:#1a3a5c;margin:20px 0 8px">Restricciones cumplidas</h3>
+<ul style="margin-left:20px;line-height:2">
+  <li>No se utiliza ninguna librería de análisis léxico (PLY, ANTLR, re.compile para tokenizar, etc.)</li>
+  <li>La lectura es estrictamente carácter por carácter (<code>_advance()</code> consume uno a la vez)</li>
+  <li>El backtracking es puntual y acotado (solo para distinguir temporada de número)</li>
+</ul>
+</main>
+</body>
+</html>

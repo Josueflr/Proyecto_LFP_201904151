@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Manual de Usuario — LigaBot</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f2f5;color:#222}
+  header{background:#1a3a5c;color:#fff;padding:16px 28px;display:flex;align-items:center;gap:16px}
+  header h1{font-size:1.2rem;font-weight:600}
+  header span{font-size:.85rem;color:#aac4e0}
+  main{padding:28px;max-width:1100px;margin:0 auto}
+  h2{color:#1a3a5c;margin-bottom:6px;font-size:1.3rem}
+  .meta{color:#888;font-size:.85rem;margin-bottom:20px}
+  table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;
+         overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.08);margin-top:12px}
+  thead tr{background:#1a3a5c;color:#fff}
+  th,td{padding:11px 15px;text-align:left;border-bottom:1px solid #e8ecf0;font-size:.9rem}
+  tbody tr:hover{background:#f7f9fc}
+  tbody tr:last-child td{border-bottom:none}
+  .lex{font-family:'Consolas',monospace;color:#c0392b;font-size:.88rem}
+  .tok{font-family:'Consolas',monospace;color:#2471a3;font-weight:600;font-size:.88rem}
+  .desc{color:#922b21;font-size:.88rem}
+  .num{color:#555;text-align:center;width:48px}
+  .pos{color:#555;text-align:center}
+  .empty{background:#fff;border-radius:8px;padding:24px;color:#27ae60;font-size:1rem;
+          box-shadow:0 2px 8px rgba(0,0,0,.08);margin-top:12px}
+</style>
+</head>
+<body>
+<header>
+  <h1>LigaBot</h1>
+  <span>Análisis Léxico — Fase 1</span>
+</header>
+<main>
+<h2>Manual de Usuario — LigaBot Fase 1</h2>
+<p class="meta">Analizador Léxico del Lenguaje de Comandos LigaBot</p>
+
+<h3 style="color:#1a3a5c;margin:20px 0 8px">¿Qué es LigaBot?</h3>
+<p>LigaBot es un analizador léxico interactivo que reconoce los tokens del lenguaje de
+comandos LigaBot — un lenguaje diseñado para consultar estadísticas históricas de La Liga
+española. En la Fase 1 solo se evalúa el análisis léxico.</p>
+
+<h3 style="color:#1a3a5c;margin:20px 0 8px">Cómo usar la interfaz</h3>
+<table>
+<thead><tr><th>Elemento</th><th>Función</th></tr></thead>
+<tbody>
+<tr><td><b>Campo de texto</b> (inferior)</td>
+    <td>Escriba cualquier cadena de texto o un comando de LigaBot y presione <b>Analizar</b>
+    o la tecla <b>Enter</b>.</td></tr>
+<tr><td><b>Botón Analizar</b></td>
+    <td>Ejecuta el analizador léxico sobre el texto ingresado.</td></tr>
+<tr><td><b>Área de resultado</b></td>
+    <td>Muestra cuántos tokens se reconocieron y los errores léxicos encontrados.</td></tr>
+<tr><td><b>Reporte de Tokens</b></td>
+    <td>Abre en el navegador la tabla completa de tokens reconocidos (todos los análisis
+    acumulados).</td></tr>
+<tr><td><b>Reporte de Errores</b></td>
+    <td>Abre en el navegador el listado de errores léxicos encontrados.</td></tr>
+<tr><td><b>Limpiar Tokens</b></td>
+    <td>Borra la lista interna de tokens (el próximo reporte empezará vacío).</td></tr>
+<tr><td><b>Limpiar Errores</b></td>
+    <td>Borra la lista interna de errores léxicos.</td></tr>
+<tr><td><b>Método del Árbol</b></td>
+    <td>Abre la documentación formal del proceso de construcción del analizador léxico.</td></tr>
+<tr><td><b>Manual de Usuario</b></td>
+    <td>Este documento.</td></tr>
+<tr><td><b>Manual Técnico</b></td>
+    <td>Descripción técnica de la implementación.</td></tr>
+</tbody>
+</table>
+
+<h3 style="color:#1a3a5c;margin:20px 0 8px">Tokens reconocidos</h3>
+<table>
+<thead><tr><th>Categoría</th><th>Ejemplo(s)</th><th>Token asignado</th></tr></thead>
+<tbody>
+<tr><td>Palabras reservadas</td>
+    <td><code>RESULTADO, VS, TEMPORADA, JORNADA, GOLES, LOCAL,<br>
+    VISITANTE, TOTAL, TABLA, PARTIDOS, TOP, SUPERIOR, INFERIOR, ADIOS</code></td>
+    <td>El nombre de la palabra en mayúsculas</td></tr>
+<tr><td>Banderas</td>
+    <td><code>-f &nbsp; -n &nbsp; -ji &nbsp; -jf</code></td>
+    <td>BANDERA_F, BANDERA_N, BANDERA_JI, BANDERA_JF</td></tr>
+<tr><td>Cadenas</td>
+    <td><code>"Real Madrid"</code>, <code>"Betis"</code></td>
+    <td>CADENA</td></tr>
+<tr><td>Temporada</td>
+    <td><code>1979-1980</code>, <code>2023-2024</code></td>
+    <td>TEMPORADA_VAL</td></tr>
+<tr><td>Número</td>
+    <td><code>1</code>, <code>38</code></td>
+    <td>NUMERO (máx. 2 dígitos)</td></tr>
+<tr><td>Símbolo menor</td>
+    <td><code>&lt;</code></td>
+    <td>MENOR</td></tr>
+<tr><td>Símbolo mayor</td>
+    <td><code>&gt;</code></td>
+    <td>MAYOR</td></tr>
+</tbody>
+</table>
+
+<h3 style="color:#1a3a5c;margin:20px 0 8px">Ejemplos de análisis</h3>
+<table>
+<thead><tr><th>Texto ingresado</th><th>Resultado esperado</th></tr></thead>
+<tbody>
+<tr><td><code>RESULTADO "Betis" VS "Rayo Vallecano" TEMPORADA &lt;1979-1980&gt;</code></td>
+    <td>8 tokens, 0 errores</td></tr>
+<tr><td><code>GOLES LOCAL "Barcelona" TEMPORADA &lt;2023-2024&gt;</code></td>
+    <td>6 tokens, 0 errores</td></tr>
+<tr><td><code>TOP SUPERIOR TEMPORADA &lt;1979-1980&gt; -n 3</code></td>
+    <td>7 tokens, 0 errores</td></tr>
+<tr><td><code>PARTIDOS "Betis" TEMPORADA &lt;1979-1980&gt; -ji 1 -jf 5 -f "partidos_betis"</code></td>
+    <td>11 tokens, 0 errores</td></tr>
+<tr><td><code>ADIOS</code></td>
+    <td>1 token, 0 errores</td></tr>
+<tr><td><code>resultado$ "equipo"</code></td>
+    <td>1 token (resultado→RESULTADO), 1 error ($)</td></tr>
+</tbody>
+</table>
+
+<h3 style="color:#1a3a5c;margin:20px 0 8px">Tipos de errores léxicos detectados</h3>
+<ul style="margin-left:20px;line-height:2.2">
+  <li>Carácter no reconocido (ej: <code>$</code>, <code>@</code>, <code>!</code>)</li>
+  <li>Cadena no cerrada (falta la comilla de cierre <code>"</code>)</li>
+  <li>Bandera no reconocida (ej: <code>-x</code>, <code>-jk</code>)</li>
+  <li>Número inválido (más de 2 dígitos sin formato de temporada)</li>
+  <li>Palabra no reconocida (no es keyword ni está entre comillas)</li>
+</ul>
+</main>
+</body>
+</html>
