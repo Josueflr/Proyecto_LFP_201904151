@@ -16,16 +16,6 @@ Parser de descenso recursivo para 8 comandos, integrado con una fuente de datos 
 
 ---
 
-## Requisitos
-
-- Python 3.10+
-- matplotlib
-- python-docx
-
-```bash
-pip install matplotlib python-docx
-```
-
 ---
 
 ## Cómo ejecutar
@@ -66,11 +56,7 @@ Los comandos son **case-insensitive** (`resultado`, `RESULTADO`, `Resultado` son
 │   ├── gui.py               # interfaz Tkinter
 │   ├── metodo_arbol.py      # HTML del Método del Árbol
 │   └── manual_generator.py  # manuales HTML
-├── scripts/
-│   ├── generate_diagrams.py # genera PNGs en assets/
-│   ├── generate_drawio.py   # genera .drawio en assets/
-│   └── generate_doc.py      # genera documentación Word en docs/
-├── assets/                  # diagramas e imágenes
+├── images/                  # imágenes
 ├── docs/                    # documentación Word
 ├── tests/
 │   └── test_lexer_automatico.py
@@ -89,9 +75,4 @@ python tests/test_lexer_automatico.py
 
 ---
 
-## Scripts auxiliares
 
-```bash
-python scripts/generate_diagrams.py  # regenera los PNGs de los diagramas
-python scripts/generate_doc.py       # regenera Documentacion_LigaBot.docx
-```
