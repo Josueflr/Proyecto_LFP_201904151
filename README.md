@@ -1,92 +1,97 @@
-## LigaBot
+# LigaBot
 
-LigaBot es una aplicación de escritorio con interfaz gráfica que implementa un **analizador léxico manual** para 
-un lenguaje de comandos de consulta de fútbol. El usuario ingresa texto en el lenguaje de LigaBot y la aplicación clasifica 
-cada elemento en tokens o reporta errores léxicos con su posición exacta (fila y columna).
+Proyecto del curso de Lenguajes Formales y de Programación — USAC, vacaciones junio 2026.
 
-## Características
+Es un chatbot de escritorio que permite consultar estadísticas históricas de La Liga española (temporadas 1979-1980 a 2019-2020) escribiendo comandos en un lenguaje formal definido para el proyecto.
 
-* Analizador léxico implementado desde cero en Python
-* Interfaz gráfica con Tkinter (modo chat)
-* Reconocimiento de palabras reservadas, banderas, cadenas, temporadas, números y símbolos
-* Reporte de tokens en HTML
-* Reporte de errores léxicos en HTML
-* Método del Árbol (de expresión regular → AFD) en HTML
-* Manual de Usuario y Manual Técnico en HTML
+---
+
+## Fases
+
+**Fase 1 — Analizador Léxico**
+Implementación de un AFD de 22 estados construido con el Método del Árbol directamente desde las expresiones regulares de 23 tokens. Sin librerías externas de análisis léxico.
+
+**Fase 2 — Analizador Sintáctico y Chatbot**
+Parser de descenso recursivo para 8 comandos, integrado con una fuente de datos CSV y una interfaz gráfica en Tkinter.
+
+---
+
+## Requisitos
+
+- Python 3.10+
+- matplotlib
+- python-docx
+
+```bash
+pip install matplotlib python-docx
+```
+
+---
+
+## Cómo ejecutar
+
+```bash
+python main.py
+```
+
+---
+
+## Comandos
+
+```
+RESULTADO "Equipo1" VS "Equipo2" TEMPORADA <AAAA-AAAA>
+JORNADA N TEMPORADA <AAAA-AAAA> [-f "nombre"]
+GOLES LOCAL|VISITANTE|TOTAL "Equipo" TEMPORADA <AAAA-AAAA>
+TABLA TEMPORADA <AAAA-AAAA> [-f "nombre"]
+PARTIDOS "Equipo" TEMPORADA <AAAA-AAAA> [-f "nombre"] [-ji N] [-jf N]
+TOP SUPERIOR|INFERIOR TEMPORADA <AAAA-AAAA> [-n N]
+ADIOS
+```
+
+Los comandos son **case-insensitive** (`resultado`, `RESULTADO`, `Resultado` son equivalentes).
+
+---
 
 ## Estructura del proyecto
 
-```text
+```
 ├── main.py
-├── gui.py
-├── lexer.py
-├── reporter.py
-├── metodo_arbol.py
-├── manual_generator.py
-└── reportes
-    ├── Reporte_Token.html
-    ├── Reporte_Errores.html
-    ├── Metodo_Arbol.html
-    ├── Manual_Usuario.html
-    └── Manual_Tecnico.html
+├── LaLigaBot-LFP.csv
+├── src/
+│   ├── lexer.py             # AFD 22 estados
+│   ├── parser.py            # descenso recursivo
+│   ├── chatbot.py           # pipeline principal
+│   ├── data_source.py       # consultas al CSV
+│   ├── reporter.py          # generación de HTMLs
+│   ├── gui.py               # interfaz Tkinter
+│   ├── metodo_arbol.py      # HTML del Método del Árbol
+│   └── manual_generator.py  # manuales HTML
+├── scripts/
+│   ├── generate_diagrams.py # genera PNGs en assets/
+│   ├── generate_drawio.py   # genera .drawio en assets/
+│   └── generate_doc.py      # genera documentación Word en docs/
+├── assets/                  # diagramas e imágenes
+├── docs/                    # documentación Word
+├── tests/
+│   └── test_lexer_automatico.py
+└── reportes/                # HTMLs generados al usar el chatbot
+```
 
+---
 
-  ## Requisitos
+## Tests
 
-  - Python 3.8 o superior
-  - Tkinter (incluido en la instalación estándar de Python)
+```bash
+python tests/test_lexer_automatico.py
+```
 
-  ## Ejecución
+254 casos de prueba que verifican el lexer e incluyen una comprobación de que no se usan librerías de análisis léxico prohibidas (`re`, `ply`, `antlr4`, etc.).
 
-  ```bash
-  python main.py
+---
 
-  Uso
+## Scripts auxiliares
 
-  1. Ejecuta la aplicación con el comando anterior.
-  2. Escribe un comando en el campo de texto inferior (ej. RESULTADO "Barcelona" VS "Real Madrid" TEMPORADA 2023-2024).
-  3. Presiona Analizar o la tecla Enter.
-  4. La aplicación mostrará los tokens reconocidos o los errores encontrados.
-  5. Usa los botones del panel lateral para generar los reportes HTML.
-
-  Tokens reconocidos
-
-  ┌───────────────┬──────────────────────────────┬─────────────┐
-  │     Token     │         Descripción          │   Ejemplo   │
-  ├───────────────┼──────────────────────────────┼─────────────┤
-  │ RESULTADO     │ Palabra reservada            │ resultado   │
-  ├───────────────┼──────────────────────────────┼─────────────┤
-  │ VS            │ Palabra reservada            │ vs          │
-  ├───────────────┼──────────────────────────────┼─────────────┤
-  │ TEMPORADA     │ Palabra reservada            │ Temporada   │
-  ├───────────────┼──────────────────────────────┼─────────────┤
-  │ BANDERA_F     │ Bandera de nombre de archivo │ -f          │
-  ├───────────────┼──────────────────────────────┼─────────────┤
-  │ BANDERA_N     │ Bandera de número            │ -n          │
-  ├───────────────┼──────────────────────────────┼─────────────┤
-  │ BANDERA_JI    │ Bandera de jornada inicial   │ -ji         │
-  ├───────────────┼──────────────────────────────┼─────────────┤
-  │ BANDERA_JF    │ Bandera de jornada final     │ -jf         │
-  ├───────────────┼──────────────────────────────┼─────────────┤
-  │ CADENA        │ Texto entre comillas dobles  │ "Barcelona" │
-  ├───────────────┼──────────────────────────────┼─────────────┤
-  │ TEMPORADA_VAL │ Valor de temporada           │ 2023-2024   │
-  ├───────────────┼──────────────────────────────┼─────────────┤
-  │ NUMERO        │ Número de 1 o 2 dígitos      │ 5, 38       │
-  ├───────────────┼──────────────────────────────┼─────────────┤
-  │ MENOR         │ Símbolo menor que            │ <           │
-  ├───────────────┼──────────────────────────────┼─────────────┤
-  │ BANDERA_JI    │ Bandera de jornada inicial   │ -ji         │
-  ├───────────────┼──────────────────────────────┼─────────────┤
-  │ BANDERA_JF    │ Bandera de jornada final     │ -jf         │
-  ├───────────────┼──────────────────────────────┼─────────────┤
-  │ CADENA        │ Texto entre comillas dobles  │ "Barcelona" │
-  ├───────────────┼──────────────────────────────┼─────────────┤
-  │ TEMPORADA_VAL │ Valor de temporada           │ 2023-2024   │
-  ├───────────────┼──────────────────────────────┼─────────────┤
-  │ NUMERO        │ Número de 1 o 2 dígitos      │ 5, 38       │
-  ├───────────────┼──────────────────────────────┼─────────────┤
-  │ MENOR         │ Símbolo menor que            │ <           │
-  ├───────────────┼──────────────────────────────┼─────────────┤
-  │ MAYOR         │ Símbolo mayor que            │ >           │
-  └───────────────┴──────────────────────────────┴─────────────┘
+```bash
+python scripts/generate_diagrams.py  # regenera los PNGs de los diagramas
+python scripts/generate_doc.py       # regenera Documentacion_LigaBot.docx
+```
