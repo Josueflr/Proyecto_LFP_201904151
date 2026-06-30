@@ -2,25 +2,25 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Método del Árbol — LigaBot</title>
+<title>Metodo del Arbol - LigaBot</title>
 <style>
   *{margin:0;padding:0;box-sizing:border-box}
-  body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f2f5;color:#222;font-size:.92rem}
-  header{background:#1a3a5c;color:#fff;padding:16px 28px}
+  body{font-family:'Segoe UI',Arial,sans-serif;background:#edf3ee;color:#222;font-size:.92rem}
+  header{background:#0d3b2e;color:#fff;padding:16px 28px}
   header h1{font-size:1.25rem;font-weight:600}
-  header p{font-size:.82rem;color:#aac4e0;margin-top:3px}
+  header p{font-size:.82rem;color:#7fc4a0;margin-top:3px}
   main{padding:28px;max-width:1050px;margin:0 auto}
   section{margin-bottom:36px}
-  h2{color:#1a3a5c;font-size:1.1rem;border-left:4px solid #1a3a5c;padding-left:10px;margin-bottom:14px}
-  h3{color:#2c5f9e;font-size:.95rem;margin:18px 0 8px}
+  h2{color:#0d3b2e;font-size:1.1rem;border-left:4px solid #0d3b2e;padding-left:10px;margin-bottom:14px}
+  h3{color:#2e7d8c;font-size:.95rem;margin:18px 0 8px}
   p{margin-bottom:10px;line-height:1.6}
   table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;
          overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.08);margin-bottom:14px}
-  thead tr{background:#1a3a5c;color:#fff}
-  th,td{padding:9px 13px;text-align:left;border-bottom:1px solid #e8ecf0;vertical-align:top}
-  tbody tr:hover{background:#f7f9fc}
+  thead tr{background:#0d3b2e;color:#fff}
+  th,td{padding:9px 13px;text-align:left;border-bottom:1px solid #cde3d4;vertical-align:top}
+  tbody tr:hover{background:#f0f6f2}
   tbody tr:last-child td{border-bottom:none}
-  code{background:#eef2f7;padding:1px 5px;border-radius:3px;font-size:.85rem;color:#c0392b}
+  code{background:#e4f2ea;padding:1px 5px;border-radius:3px;font-size:.85rem;color:#b83232}
   .c{text-align:center;font-weight:bold}
   .small{font-size:.8rem;color:#555}
   .tree-box{background:#fff;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,.08);
@@ -30,13 +30,18 @@
   .node-start{color:#e67e22;font-weight:bold}
   .highlight{background:#fef9e7;border-left:3px solid #f39c12;padding:10px 14px;
               border-radius:0 6px 6px 0;margin:12px 0}
-  .formula{background:#eaf4fb;border-left:3px solid #2471a3;padding:10px 14px;
+  .formula{background:#e4f2ea;border-left:3px solid #2e7d8c;padding:10px 14px;
             border-radius:0 6px 6px 0;margin:10px 0;font-family:'Consolas',monospace}
+  .accept-row{background:#f0fff4}
+  .error-row{background:#fff5f5}
+  .diagram-img{max-width:100%;border-radius:8px;box-shadow:0 2px 12px rgba(0,0,0,.12);
+               display:block;margin:14px auto}
+  .diagram-caption{text-align:center;font-size:.82rem;color:#666;margin-top:4px;margin-bottom:18px}
 </style>
 </head>
 <body>
 <header>
-  <h1>Método del Árbol — LigaBot</h1>
+  <h1>Metodo del Arbol - LigaBot</h1>
   <p>Construcción directa del AFD a partir de la expresión regular (Fase 1)</p>
 </header>
 <main>
@@ -68,7 +73,7 @@ R = token₁ | token₂ | … | token₂₃
   hoja para las 23 categorías), se aplica el método completo sobre el token
   <strong>NÚMERO</strong> (<code>[0-9][0-9]?</code>) como caso representativo.
   Este token es idóneo porque cubre los operadores ·, | y ε que aparecen en todos los
-  demás patrones.
+  demás patrones. El AFD completo de los 22 estados se muestra en la sección 10.
 </div>
 </section>
 
@@ -77,7 +82,7 @@ R = token₁ | token₂ | … | token₂₃
 <h2>3. Expresión Aumentada para el Token NÚMERO</h2>
 <p>El patrón <code>[0-9][0-9]?</code> se reescribe eliminando el operador <code>?</code>
 (azúcar sintáctica):</p>
-<div class="formula">[0-9]([0-9])?  →  d · (d | ε)</div>
+<div class="formula">[0-9]([0-9])?  ->  d · (d | ε)</div>
 <p>Donde <strong>d</strong> representa cualquier dígito <code>[0-9]</code>. La expresión
 aumentada queda:</p>
 <div class="formula">R_aug = (d · (d | ε)) · #</div>
@@ -110,11 +115,18 @@ aumentada queda:</p>
 </div>
 </section>
 
+<!-- imagen árbol -->
+<section>
+<h2>4b. Diagrama - Arbol Sintactico</h2>
+<img src="../arbol.png" alt="Árbol Sintáctico" class="diagram-img">
+<p class="diagram-caption">Árbol sintáctico de la expresión aumentada  R_aug = (d[1] · (d[2] | ε)) · #[3]</p>
+</section>
+
 <!-- 5. Anulabilidad -->
 <section>
 <h2>5. Anulabilidad (nullable)</h2>
-<p>Reglas: hoja-símbolo → false; hoja-ε → true; OR → nullable(L) OR nullable(R);
-CONCAT → nullable(L) AND nullable(R).</p>
+<p>Reglas: hoja-símbolo -> false; hoja-ε -> true; OR -> nullable(L) OR nullable(R);
+CONCAT -> nullable(L) AND nullable(R).</p>
 <table>
   <thead><tr><th>#</th><th>Nodo</th><th>Tipo</th><th>nullable</th></tr></thead>
   <tbody><tr><td>1</td><td>d[1]</td><td>false</td></tr><tr><td>2</td><td>d[2]</td><td>false</td></tr><tr><td>3</td><td>ε</td><td>true</td></tr><tr><td>4</td><td>d[2] | ε</td><td>nullable(d[2]) OR nullable(ε) = false OR true = <b>true</b></td></tr><tr><td>5</td><td>d[1] · (d[2]|ε)</td><td>nullable(d[1]) AND nullable(d[2]|ε) = false AND true = <b>false</b></td></tr><tr><td>6</td><td>#[3]</td><td>false</td></tr><tr><td>7</td><td>(d[1]·(d[2]|ε)) · #[3]</td><td>nullable(left) AND nullable(#) = false AND false = <b>false</b></td></tr></tbody>
@@ -124,22 +136,22 @@ CONCAT → nullable(L) AND nullable(R).</p>
 <!-- 6. Primeros (firstpos) -->
 <section>
 <h2>6. Primeros (firstpos)</h2>
-<p>Reglas: hoja-d → {pos}; hoja-ε → ∅; OR → fp(L) ∪ fp(R);
-CONCAT c₁·c₂ → nullable(c₁)? fp(c₁)∪fp(c₂) : fp(c₁).</p>
+<p>Reglas: hoja-d -> {pos}; hoja-ε -> ∅; OR -> fp(L) ∪ fp(R);
+CONCAT c₁·c₂ -> nullable(c₁)? fp(c₁)∪fp(c₂) : fp(c₁).</p>
 <table>
   <thead><tr><th>#</th><th>Nodo</th><th>firstpos</th></tr></thead>
-  <tbody><tr><td>1</td><td>d[1]</td><td>{1}</td></tr><tr><td>2</td><td>d[2]</td><td>{2}</td></tr><tr><td>3</td><td>ε</td><td>∅</td></tr><tr><td>4</td><td>d[2] | ε</td><td>firstpos(d[2]) ∪ firstpos(ε) = {2} ∪ ∅ = <b>{2}</b></td></tr><tr><td>5</td><td>d[1] · (d[2]|ε)</td><td>nullable(d[1])=false → <b>firstpos(d[1]) = {1}</b></td></tr><tr><td>6</td><td>#[3]</td><td>{3}</td></tr><tr><td>7</td><td>(d[1]·(d[2]|ε)) · #[3]</td><td>nullable(left)=false → <b>firstpos(left) = {1}</b></td></tr></tbody>
+  <tbody><tr><td>1</td><td>d[1]</td><td>{1}</td></tr><tr><td>2</td><td>d[2]</td><td>{2}</td></tr><tr><td>3</td><td>ε</td><td>∅</td></tr><tr><td>4</td><td>d[2] | ε</td><td>firstpos(d[2]) ∪ firstpos(ε) = {2} ∪ ∅ = <b>{2}</b></td></tr><tr><td>5</td><td>d[1] · (d[2]|ε)</td><td>nullable(d[1])=false -> <b>firstpos(d[1]) = {1}</b></td></tr><tr><td>6</td><td>#[3]</td><td>{3}</td></tr><tr><td>7</td><td>(d[1]·(d[2]|ε)) · #[3]</td><td>nullable(left)=false -> <b>firstpos(left) = {1}</b></td></tr></tbody>
 </table>
 </section>
 
 <!-- 7. Últimos (lastpos) -->
 <section>
 <h2>7. Últimos (lastpos)</h2>
-<p>Reglas: hoja-d → {pos}; hoja-ε → ∅; OR → lp(L) ∪ lp(R);
-CONCAT c₁·c₂ → nullable(c₂)? lp(c₁)∪lp(c₂) : lp(c₂).</p>
+<p>Reglas: hoja-d -> {pos}; hoja-ε -> ∅; OR -> lp(L) ∪ lp(R);
+CONCAT c₁·c₂ -> nullable(c₂)? lp(c₁)∪lp(c₂) : lp(c₂).</p>
 <table>
   <thead><tr><th>#</th><th>Nodo</th><th>lastpos</th></tr></thead>
-  <tbody><tr><td>1</td><td>d[1]</td><td>{1}</td></tr><tr><td>2</td><td>d[2]</td><td>{2}</td></tr><tr><td>3</td><td>ε</td><td>∅</td></tr><tr><td>4</td><td>d[2] | ε</td><td>lastpos(d[2]) ∪ lastpos(ε) = {2} ∪ ∅ = <b>{2}</b></td></tr><tr><td>5</td><td>d[1] · (d[2]|ε)</td><td>nullable(d[2]|ε)=true → lastpos(d[1]) ∪ lastpos(d[2]|ε) = {1} ∪ {2} = <b>{1,2}</b></td></tr><tr><td>6</td><td>#[3]</td><td>{3}</td></tr><tr><td>7</td><td>(d[1]·(d[2]|ε)) · #[3]</td><td>nullable(#)=false → <b>lastpos(#[3]) = {3}</b></td></tr></tbody>
+  <tbody><tr><td>1</td><td>d[1]</td><td>{1}</td></tr><tr><td>2</td><td>d[2]</td><td>{2}</td></tr><tr><td>3</td><td>ε</td><td>∅</td></tr><tr><td>4</td><td>d[2] | ε</td><td>lastpos(d[2]) ∪ lastpos(ε) = {2} ∪ ∅ = <b>{2}</b></td></tr><tr><td>5</td><td>d[1] · (d[2]|ε)</td><td>nullable(d[2]|ε)=true -> lastpos(d[1]) ∪ lastpos(d[2]|ε) = {1} ∪ {2} = <b>{1,2}</b></td></tr><tr><td>6</td><td>#[3]</td><td>{3}</td></tr><tr><td>7</td><td>(d[1]·(d[2]|ε)) · #[3]</td><td>nullable(#)=false -> <b>lastpos(#[3]) = {3}</b></td></tr></tbody>
 </table>
 </section>
 
@@ -149,59 +161,136 @@ CONCAT c₁·c₂ → nullable(c₂)? lp(c₁)∪lp(c₂) : lp(c₂).</p>
 <p>Para cada nodo CONCAT c₁·c₂: ∀p ∈ lastpos(c₁), followpos(p) ∪= firstpos(c₂).</p>
 <table>
   <thead><tr><th>Pos</th><th>Símbolo</th><th>followpos</th><th>Cálculo</th></tr></thead>
-  <tbody><tr><td class="c">1</td><td><code>d</code></td><td class="c"><b>{2,3}</b></td><td class="small">Desde d[1]·(d[2]|ε): ∀i ∈ lastpos(d[1])={1} → followpos(1) ∪= firstpos(d[2]|ε)={2} → {2}<br>Desde raíz: ∀i ∈ lastpos(left)={1,2} → followpos(1) ∪= firstpos(#[3])={3} → {2,3}</td></tr><tr><td class="c">2</td><td><code>d</code></td><td class="c"><b>{3}</b></td><td class="small">Desde raíz: ∀i ∈ lastpos(left)={1,2} → followpos(2) ∪= firstpos(#[3])={3} → {3}</td></tr><tr><td class="c">3</td><td><code>#</code></td><td class="c"><b>∅</b></td><td class="small">Posición marcadora — no genera followpos</td></tr></tbody>
+  <tbody><tr><td class="c">1</td><td><code>d</code></td><td class="c"><b>{2,3}</b></td><td class="small">Desde d[1]·(d[2]|ε): ∀i ∈ lastpos(d[1])={1} -> followpos(1) ∪= firstpos(d[2]|ε)={2} -> {2}<br>Desde raíz: ∀i ∈ lastpos(left)={1,2} -> followpos(1) ∪= firstpos(#[3])={3} -> {2,3}</td></tr><tr><td class="c">2</td><td><code>d</code></td><td class="c"><b>{3}</b></td><td class="small">Desde raíz: ∀i ∈ lastpos(left)={1,2} -> followpos(2) ∪= firstpos(#[3])={3} -> {3}</td></tr><tr><td class="c">3</td><td><code>#</code></td><td class="c"><b>∅</b></td><td class="small">Posicion marcadora - no genera followpos</td></tr></tbody>
 </table>
 </section>
 
-<!-- 9. Construcción del AFD -->
+<!-- 9. Construcción del AFD (NÚMERO) -->
 <section>
-<h2>9. Construcción del AFD</h2>
+<h2>9. Construcción del AFD para NÚMERO</h2>
 <p>El estado inicial es <strong>firstpos(raíz) = {1}</strong>. Un estado es de aceptación
 si contiene la posición del marcador (#) = 3.</p>
 
-<h3>Estados del AFD</h3>
+<h3>Estados del AFD (NÚMERO)</h3>
 <table>
   <thead><tr><th>Estado</th><th>Conjunto de posiciones</th><th>Tipo</th><th>¿Acepta?</th></tr></thead>
-  <tbody><tr><td>A</td><td>{1}</td><td>Inicial</td><td>No</td></tr><tr><td>B</td><td>{2,3}</td><td>—</td><td>Sí  (contiene pos 3)</td></tr><tr><td>C</td><td>{3}</td><td>—</td><td>Sí  (contiene pos 3)</td></tr></tbody>
+  <tbody><tr><td>A</td><td>{1}</td><td>Inicial</td><td>No</td></tr><tr><td>B</td><td>{2,3}</td><td>-</td><td>Si  (contiene pos 3)</td></tr><tr><td>C</td><td>{3}</td><td>-</td><td>Si  (contiene pos 3)</td></tr></tbody>
 </table>
 
-<h3>Tabla de transiciones</h3>
+<h3>Tabla de transiciones (NÚMERO)</h3>
 <table>
   <thead><tr><th>Estado actual</th><th>Entrada</th><th>Estado siguiente</th><th>Razón</th></tr></thead>
-  <tbody><tr><td>A = {1}</td><td>d (0–9)</td><td>B = {2,3}</td><td>followpos(1) = {2,3}</td></tr><tr><td>B = {2,3}</td><td>d (0–9)</td><td>C = {3}</td><td>followpos(2) = {3}  (pos 3 tiene símbolo #, no d)</td></tr><tr><td>C = {3}</td><td>—</td><td>muerto</td><td>pos 3 solo tiene símbolo #</td></tr></tbody>
+  <tbody><tr><td>A = {1}</td><td>d (0-9)</td><td>B = {2,3}</td><td>followpos(1) = {2,3}</td></tr><tr><td>B = {2,3}</td><td>d (0-9)</td><td>C = {3}</td><td>followpos(2) = {3}  (pos 3 tiene simbolo #, no d)</td></tr><tr><td>C = {3}</td><td>-</td><td>muerto</td><td>pos 3 solo tiene simbolo #</td></tr></tbody>
 </table>
 
-<h3>Diagrama del AFD</h3>
+<h3>Diagrama del AFD (NUMERO)</h3>
 <div class="tree-box">
-  <span class="node-start">→ [A=1]</span>  ──── d ────►  <span class="node-accept">((B=(2, 3)))</span>  ──── d ────►  <span class="node-accept">((C=3))</span>
-                                                                           │
-                                              (estado de aceptación)      (estado de aceptación)
+  <span class="node-start">[A={1}]</span>  ---- d ---->  <span class="node-accept">((B={2,3}))</span>  ---- d ---->  <span class="node-accept">((C={3}))</span>
 
-  Verificación:
-    "5"   → A →(d)→ B  ✔  acepta (1 dígito)
-    "38"  → A →(d)→ B →(d)→ C  ✔  acepta (2 dígitos)
-    "100" → A →(d)→ B →(d)→ C →(d)→ muerto  ✘  rechaza (3 dígitos)
+                              (acepta 1 digito)          (acepta 2 digitos)
+
+  Verificacion:
+    "5"   : A --(d)--> B                    [OK]  acepta 1 digito
+    "38"  : A --(d)--> B --(d)--> C         [OK]  acepta 2 digitos
+    "100" : A --(d)--> B --(d)--> C --(d)--> muerto   [rechaza: 3 digitos]
 </div>
 </section>
 
-<!-- 10. Coherencia con el lexer -->
+<!-- imagen AFD NUMERO -->
 <section>
-<h2>10. Coherencia entre el AFD y el Analizador Léxico Implementado</h2>
-<p>El método <code>_lex_number_or_season()</code> en <code>lexer.py</code> implementa
-directamente los estados del AFD anterior:</p>
+<h2>9b. Diagrama - AFD para NUMERO (3 estados)</h2>
+<img src="../tabla de siguientes.png" alt="Tablas método del árbol" class="diagram-img">
+<p class="diagram-caption">Tablas nullable, firstpos, lastpos y followpos del token NÚMERO</p>
+</section>
+
+<!-- 10. AFD completo 22 estados -->
+<section>
+<h2>10. AFD Completo del Analizador Lexico LigaBot - 22 Estados (q0-q21)</h2>
+<p>Aplicando el metodo del arbol a la expresion regular combinada de todos los tokens se
+obtiene un AFD con <strong>22 estados</strong>. Cada estado corresponde a una etapa de
+reconocimiento distinta. Los estados marcados como <strong>Si</strong> en la columna Acepta
+son de aceptacion inmediata: emiten el token correspondiente sin consumir el caracter siguiente.</p>
+
+<h3>Tabla de estados</h3>
+<table>
+  <thead><tr>
+    <th>Estado</th><th>Descripción</th>
+    <th class="c">Acepta</th><th class="c">¿Acepta?</th>
+    <th>Token emitido / acción</th>
+  </tr></thead>
+  <tbody><tr><td><code><b>q0</b></code></td><td>Estado inicial / limpio</td><td class="c">Inicial</td><td class="c">No</td><td>-</td></tr><tr><td><code><b>q1</b></code></td><td>Leyendo letras consecutivas</td><td class="c">-</td><td class="c">No</td><td>Palabra reservada o ERROR al salir</td></tr><tr><td><code><b>q2</b></code></td><td>1 digito acumulado</td><td class="c">-</td><td class="c">No</td><td>NUMERO si no continua digito</td></tr><tr><td><code><b>q3</b></code></td><td>2 digitos acumulados</td><td class="c">-</td><td class="c">No</td><td>NUMERO si no continua digito</td></tr><tr><td><code><b>q4</b></code></td><td>3 digitos acumulados</td><td class="c">-</td><td class="c">No</td><td>ERROR al salir</td></tr><tr><td><code><b>q5</b></code></td><td>4 digitos acumulados</td><td class="c">-</td><td class="c">No</td><td>-> q6 si sigue '-', -> q21 si sigue digito, ERROR si otro</td></tr><tr><td><code><b>q6</b></code></td><td>Leido <code>DDDD-</code>, espera 1er digito del 2do grupo</td><td class="c">-</td><td class="c">No</td><td>ERROR si no sigue digito</td></tr><tr><td><code><b>q7</b></code></td><td>Leido <code>DDDD-D</code></td><td class="c">-</td><td class="c">No</td><td>ERROR si no sigue digito</td></tr><tr><td><code><b>q8</b></code></td><td>Leido <code>DDDD-DD</code></td><td class="c">-</td><td class="c">No</td><td>ERROR si no sigue digito</td></tr><tr><td><code><b>q9</b></code></td><td>Leido <code>DDDD-DDD</code></td><td class="c">-</td><td class="c">No</td><td>ERROR si no sigue digito</td></tr><tr><td><code><b>q10</b></code></td><td>Leido <code>DDDD-DDDD</code> - temporada completa</td><td class="c">Si</td><td class="c">Si</td><td>TEMPORADA_VAL</td></tr><tr><td><code><b>q11</b></code></td><td>Dentro de cadena literal (tras la comilla de apertura)</td><td class="c">-</td><td class="c">No</td><td>-</td></tr><tr><td><code><b>q12</b></code></td><td>Cadena cerrada con comilla de cierre</td><td class="c">Si</td><td class="c">Si</td><td>CADENA</td></tr><tr><td><code><b>q13</b></code></td><td>Leido <code>-</code>, espera sufijo de bandera</td><td class="c">-</td><td class="c">No</td><td>-</td></tr><tr><td><code><b>q14</b></code></td><td>Leido <code>-f</code> o <code>-F</code></td><td class="c">Si</td><td class="c">Si</td><td>BANDERA_F</td></tr><tr><td><code><b>q15</b></code></td><td>Leido <code>-n</code> o <code>-N</code></td><td class="c">Si</td><td class="c">Si</td><td>BANDERA_N</td></tr><tr><td><code><b>q16</b></code></td><td>Leido <code>-j/-J</code>, espera <code>i/I</code> o <code>f/F</code></td><td class="c">-</td><td class="c">No</td><td>-</td></tr><tr><td><code><b>q17</b></code></td><td>Leido <code>-ji/-jI/-Ji/-JI</code></td><td class="c">Si</td><td class="c">Si</td><td>BANDERA_JI</td></tr><tr><td><code><b>q18</b></code></td><td>Leido <code>-jf/-jF/-Jf/-JF</code></td><td class="c">Si</td><td class="c">Si</td><td>BANDERA_JF</td></tr><tr><td><code><b>q19</b></code></td><td>Leido <code>&lt;</code></td><td class="c">Si</td><td class="c">Si</td><td>MENOR</td></tr><tr><td><code><b>q20</b></code></td><td>Leido <code>&gt;</code></td><td class="c">Si</td><td class="c">Si</td><td>MAYOR</td></tr><tr><td><code><b>q21</b></code></td><td>Desbordamiento: mas de 4 digitos consecutivos</td><td class="c">-</td><td class="c">No</td><td>ERROR al salir</td></tr></tbody>
+</table>
+
+<h3>Tabla de transiciones completa</h3>
+<table>
+  <thead><tr>
+    <th>Estado actual</th><th>Entrada</th>
+    <th>Estado siguiente</th><th>Acción</th>
+  </tr></thead>
+  <tbody><tr><td><code>q0</code></td><td>espacio / tab / \r / \n</td><td><code>q0</code></td><td>Descartar - no produce token</td></tr><tr><td><code>q0</code></td><td>letra [a-zA-Z]</td><td><code>q1</code></td><td>Iniciar lexema de palabra</td></tr><tr><td><code>q0</code></td><td>dígito [0-9]</td><td><code>q2</code></td><td>Iniciar lexema numérico</td></tr><tr><td><code>q0</code></td><td><code>"</code></td><td><code>q11</code></td><td>Iniciar cadena literal</td></tr><tr><td><code>q0</code></td><td><code>-</code></td><td><code>q13</code></td><td>Posible bandera</td></tr><tr><td><code>q0</code></td><td><code>&lt;</code></td><td><code>q19</code></td><td>Token MENOR (1 carácter)</td></tr><tr><td><code>q0</code></td><td><code>&gt;</code></td><td><code>q20</code></td><td>Token MAYOR (1 carácter)</td></tr><tr><td><code>q0</code></td><td>cualquier otro carácter</td><td><code>q0</code></td><td>ERROR: carácter no reconocido</td></tr><tr><td><code>q1</code></td><td>letra [a-zA-Z]</td><td><code>q1</code></td><td>Acumular letra</td></tr><tr><td><code>q1</code></td><td>no-letra / EOF</td><td><code>q0</code></td><td>Emitir KEYWORD si reservada, o [X] ERROR</td></tr><tr><td><code>q2</code></td><td>dígito [0-9]</td><td><code>q3</code></td><td>Acumular 2.º dígito</td></tr><tr><td><code>q2</code></td><td>no-dígito / EOF</td><td><code>q0</code></td><td>Emitir NUMERO (1 dígito)</td></tr><tr><td><code>q3</code></td><td>dígito [0-9]</td><td><code>q4</code></td><td>Acumular 3.er dígito</td></tr><tr><td><code>q3</code></td><td>no-dígito / EOF</td><td><code>q0</code></td><td>Emitir NUMERO (2 dígitos)</td></tr><tr><td><code>q4</code></td><td>dígito [0-9]</td><td><code>q5</code></td><td>Acumular 4.º dígito</td></tr><tr><td><code>q4</code></td><td>no-dígito / EOF</td><td><code>q0</code></td><td>ERROR: 3 dígitos no forman token válido</td></tr><tr><td><code>q5</code></td><td><code>-</code></td><td><code>q6</code></td><td>Iniciar sufijo de temporada</td></tr><tr><td><code>q5</code></td><td>dígito [0-9]</td><td><code>q21</code></td><td>Desbordamiento</td></tr><tr><td><code>q5</code></td><td>otro / EOF</td><td><code>q0</code></td><td>ERROR: 4 dígitos sin '-' no es token</td></tr><tr><td><code>q6</code></td><td>dígito [0-9]</td><td><code>q7</code></td><td>1.er dígito del 2.º grupo</td></tr><tr><td><code>q6</code></td><td>otro / EOF</td><td><code>q0</code></td><td>ERROR: temporada incompleta</td></tr><tr><td><code>q7</code></td><td>dígito [0-9]</td><td><code>q8</code></td><td>2.º dígito del 2.º grupo</td></tr><tr><td><code>q7</code></td><td>otro / EOF</td><td><code>q0</code></td><td>ERROR: temporada incompleta</td></tr><tr><td><code>q8</code></td><td>dígito [0-9]</td><td><code>q9</code></td><td>3.er dígito del 2.º grupo</td></tr><tr><td><code>q8</code></td><td>otro / EOF</td><td><code>q0</code></td><td>ERROR: temporada incompleta</td></tr><tr><td><code>q9</code></td><td>dígito [0-9]</td><td><code>q10</code></td><td>4.º dígito - temporada completa</td></tr><tr><td><code>q9</code></td><td>otro / EOF</td><td><code>q0</code></td><td>ERROR: temporada incompleta</td></tr><tr><td><code>q10</code></td><td>(sin consumir siguiente carácter)</td><td><code>q0</code></td><td>Emitir TEMPORADA_VAL</td></tr><tr><td><code>q11</code></td><td><code>"</code></td><td><code>q12</code></td><td>Cerrar cadena</td></tr><tr><td><code>q11</code></td><td>\n / EOF</td><td><code>q0</code></td><td>ERROR: cadena no cerrada</td></tr><tr><td><code>q11</code></td><td>cualquier otro</td><td><code>q11</code></td><td>Acumular carácter interior</td></tr><tr><td><code>q12</code></td><td>(sin consumir siguiente carácter)</td><td><code>q0</code></td><td>Emitir CADENA</td></tr><tr><td><code>q13</code></td><td><code>f</code> / <code>F</code></td><td><code>q14</code></td><td>-</td></tr><tr><td><code>q13</code></td><td><code>n</code> / <code>N</code></td><td><code>q15</code></td><td>-</td></tr><tr><td><code>q13</code></td><td><code>j</code> / <code>J</code></td><td><code>q16</code></td><td>-</td></tr><tr><td><code>q13</code></td><td>otro / EOF</td><td><code>q0</code></td><td>ERROR: bandera no reconocida</td></tr><tr><td><code>q14</code></td><td>(sin consumir siguiente carácter)</td><td><code>q0</code></td><td>Emitir BANDERA_F</td></tr><tr><td><code>q15</code></td><td>(sin consumir siguiente carácter)</td><td><code>q0</code></td><td>Emitir BANDERA_N</td></tr><tr><td><code>q16</code></td><td><code>i</code> / <code>I</code></td><td><code>q17</code></td><td>-</td></tr><tr><td><code>q16</code></td><td><code>f</code> / <code>F</code></td><td><code>q18</code></td><td>-</td></tr><tr><td><code>q16</code></td><td>otro / EOF</td><td><code>q0</code></td><td>ERROR: bandera no reconocida</td></tr><tr><td><code>q17</code></td><td>(sin consumir siguiente carácter)</td><td><code>q0</code></td><td>Emitir BANDERA_JI</td></tr><tr><td><code>q18</code></td><td>(sin consumir siguiente carácter)</td><td><code>q0</code></td><td>Emitir BANDERA_JF</td></tr><tr><td><code>q19</code></td><td>(sin consumir siguiente carácter)</td><td><code>q0</code></td><td>Emitir MENOR</td></tr><tr><td><code>q20</code></td><td>(sin consumir siguiente carácter)</td><td><code>q0</code></td><td>Emitir MAYOR</td></tr><tr><td><code>q21</code></td><td>dígito [0-9]</td><td><code>q21</code></td><td>Seguir acumulando dígitos extra</td></tr><tr><td><code>q21</code></td><td>no-dígito / EOF</td><td><code>q0</code></td><td>ERROR: demasiados dígitos</td></tr></tbody>
+</table>
+
+<div class="highlight">
+  <strong>Estados de aceptación inmediata</strong> (q10, q12, q14, q15, q17, q18, q19, q20):
+  cuando el AFD llega a uno de estos estados, emite el token y regresa a q0
+  <em>sin consumir</em> el carácter actual - ese carácter lo evaluará q0 en la siguiente
+  iteración del ciclo principal.
+</div>
+</section>
+
+<!-- imágenes AFD completo -->
+<section>
+<h2>10b. Diagrama - AFD Completo (22 estados)</h2>
+<img src="../Automata finito determinista.png" alt="AFD Completo 22 estados" class="diagram-img">
+<p class="diagram-caption">Autómata Finito Determinista completo del Analizador Léxico LigaBot (q0 - q21)</p>
+</section>
+
+<section>
+<h2>10c. Tabla de Transiciones Completa</h2>
+<img src="../Tabla de transacciones.png" alt="Tabla de transiciones" class="diagram-img">
+<p class="diagram-caption">Tabla de transiciones del AFD completo con todas las 47 transiciones (q0 - q21)</p>
+</section>
+
+<!-- 11. Coherencia con el lexer -->
+<section>
+<h2>11. Coherencia entre el AFD y el Analizador Léxico Implementado</h2>
+<p>El método <code>analyze()</code> en <code>lexer.py</code> implementa el AFD completo
+(22 estados) mediante un único bucle <code>while</code>. La variable <code>state</code>
+almacena el estado actual (q0-q21); en cada iteración se evalúa el par
+(estado, carácter) y se avanza al estado siguiente.</p>
+<table>
+<thead><tr><th>Método</th><th>Descripción</th></tr></thead>
+<tbody>
+<tr><td><code>analyze()</code></td>
+    <td>Bucle principal del AFD. Evalúa el par (estado, carácter) y ejecuta la
+    transición correspondiente. Retorna <code>(tokens, errores)</code>.</td></tr>
+<tr><td><code>_char()</code></td>
+    <td>Retorna el carácter actual <em>sin consumirlo</em> (lookahead de 1 carácter).
+    Retorna <code>None</code> al llegar al EOF.</td></tr>
+<tr><td><code>_advance()</code></td>
+    <td>Consume el carácter actual, actualiza <code>fila</code>/<code>columna</code>
+    y lo retorna.</td></tr>
+<tr><td><code>_emit(lexema, tipo, fila, col)</code></td>
+    <td>Añade un <code>Token</code> a la lista de tokens reconocidos.</td></tr>
+<tr><td><code>_emit_error(lexema, desc, fila, col)</code></td>
+    <td>Añade un <code>LexicalError</code> a la lista de errores léxicos
+    (recuperación en modo pánico: se descarta el lexema y se continúa desde q0).</td></tr>
+</tbody>
+</table>
 <ul style="margin-left:20px;line-height:2">
-  <li><strong>Estado A:</strong> se entra cuando el carácter actual es un dígito.</li>
-  <li><strong>Estado B:</strong> después de consumir el primer dígito; si el siguiente también
-      es dígito, se avanza (transición B→C); si no, se emite NUMERO.</li>
-  <li><strong>Estado C:</strong> después del segundo dígito; si hay un tercer dígito se
-      continúa acumulando para detectar una posible temporada (AAAA-AAAA).</li>
-  <li>Si se acumulan exactamente 4 dígitos y el siguiente carácter es <code>-</code>, se
-      intenta reconocer una TEMPORADA_VAL; si falla, se reporta error léxico.</li>
+  <li><strong>q0 (inicial):</strong> decide qué tipo de token comienza según el primer carácter.</li>
+  <li><strong>q1:</strong> acumula letras; emite palabra reservada (o error) al encontrar un no-letra.</li>
+  <li><strong>q2-q3:</strong> acumulan dígitos; emiten NUMERO (1 ó 2 dígitos) al salir del patrón.</li>
+  <li><strong>q4-q10:</strong> detectan el patrón <code>DDDD-DDDD</code> para TEMPORADA_VAL.</li>
+  <li><strong>q11-q12:</strong> reconocen cadenas entre comillas dobles.</li>
+  <li><strong>q13-q18:</strong> reconocen las cuatro banderas (<code>-f</code>, <code>-n</code>, <code>-ji</code>, <code>-jf</code>).</li>
+  <li><strong>q19, q20:</strong> emiten los tokens de un solo carácter MENOR y MAYOR.</li>
+  <li><strong>q21:</strong> estado de error por desbordamiento (más de 4 dígitos consecutivos).</li>
 </ul>
 <div class="highlight">
-  El analizador léxico <strong>no utiliza ninguna librería externa</strong> de análisis léxico.
-  Toda la lógica se construyó manualmente en Python siguiendo los estados derivados del
-  método del árbol.
+  El analizador léxico <strong>no utiliza ninguna librería externa</strong> de análisis léxico
+  ni backtracking. El lookahead de un carácter (<code>_char()</code> sin consumir) es
+  suficiente para decidir cada transición del AFD.
 </div>
 </section>
 

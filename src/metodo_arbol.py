@@ -1,5 +1,5 @@
 import os
-from reporter import REPORTES_DIR, _ensure_dir, open_report
+from .reporter import REPORTES_DIR, _ensure_dir, open_report
 
 
 
@@ -55,7 +55,7 @@ DFA_TRANSITIONS = [
     ("C = {3}",   "-",       "muerto",    "pos 3 solo tiene simbolo #"),
 ]
 
-# -- AFD completo del lexer LigaBot (22 estados q0-q21) -----
+# -- AFD completo del lexer LigaBot (22 estados q0-q21) ------------------------
 
 FULL_AFD_STATES = [
     ("q0",  "Estado inicial / limpio",
@@ -389,7 +389,7 @@ aumentada queda:</p>
 <!-- imagen árbol -->
 <section>
 <h2>4b. Diagrama - Arbol Sintactico</h2>
-<img src="../arbol.png" alt="Árbol Sintáctico" class="diagram-img">
+<img src="../assets/arbol.png" alt="Árbol Sintáctico" class="diagram-img">
 <p class="diagram-caption">Árbol sintáctico de la expresión aumentada  R_aug = (d[1] · (d[2] | ε)) · #[3]</p>
 </section>
 
@@ -518,7 +518,7 @@ dígito [0-9]. La posición del marcador es 3.</p>
 <!-- imagen AFD NUMERO -->
 <section>
 <h2>9b. Diagrama - AFD para NUMERO (3 estados)</h2>
-<img src="../tabla de siguientes.png" alt="Tablas método del árbol" class="diagram-img">
+<img src="../assets/tabla de siguientes.png" alt="Tablas método del árbol" class="diagram-img">
 <p class="diagram-caption">Tablas nullable, firstpos, lastpos y followpos del token NÚMERO</p>
 </section>
 
@@ -560,13 +560,13 @@ son de aceptacion inmediata: emiten el token correspondiente sin consumir el car
 <!-- imágenes AFD completo -->
 <section>
 <h2>10b. Diagrama - AFD Completo (22 estados)</h2>
-<img src="../Automata finito determinista.png" alt="AFD Completo 22 estados" class="diagram-img">
+<img src="../assets/Automata finito determinista.png" alt="AFD Completo 22 estados" class="diagram-img">
 <p class="diagram-caption">Autómata Finito Determinista completo del Analizador Léxico LigaBot (q0 - q21)</p>
 </section>
 
 <section>
 <h2>10c. Tabla de Transiciones Completa</h2>
-<img src="../Tabla de transacciones.png" alt="Tabla de transiciones" class="diagram-img">
+<img src="../assets/Tabla de transacciones.png" alt="Tabla de transiciones" class="diagram-img">
 <p class="diagram-caption">Tabla de transiciones del AFD completo con todas las 47 transiciones (q0 - q21)</p>
 </section>
 

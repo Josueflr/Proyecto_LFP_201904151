@@ -1,38 +1,182 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<title>Manual Técnico - LigaBot</title>
-<style>
-  *{margin:0;padding:0;box-sizing:border-box}
-  body{font-family:'Segoe UI',Arial,sans-serif;background:#edf3ee;color:#222}
-  header{background:#0d3b2e;color:#fff;padding:16px 28px;display:flex;align-items:center;gap:16px}
-  header h1{font-size:1.2rem;font-weight:600}
-  header span{font-size:.85rem;color:#7fc4a0}
-  main{padding:28px;max-width:1100px;margin:0 auto}
-  h2{color:#0d3b2e;margin-bottom:6px;font-size:1.3rem}
-  .meta{color:#888;font-size:.85rem;margin-bottom:20px}
-  table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;
-         overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.08);margin-top:12px}
-  thead tr{background:#0d3b2e;color:#fff}
-  th,td{padding:11px 15px;text-align:left;border-bottom:1px solid #cde3d4;font-size:.9rem}
-  tbody tr:hover{background:#f0f6f2}
-  tbody tr:last-child td{border-bottom:none}
-  .lex{font-family:'Consolas',monospace;color:#c0392b;font-size:.88rem}
-  .tok{font-family:'Consolas',monospace;color:#2e7d8c;font-weight:600;font-size:.88rem}
-  .desc{color:#922b21;font-size:.88rem}
-  .num{color:#555;text-align:center;width:48px}
-  .pos{color:#555;text-align:center}
-  .empty{background:#fff;border-radius:8px;padding:24px;color:#27ae60;font-size:1rem;
-          box-shadow:0 2px 8px rgba(0,0,0,.08);margin-top:12px}
-</style>
-</head>
-<body>
-<header>
-  <h1>LigaBot</h1>
-  <span>Analisis Lexico - Fase 1</span>
-</header>
-<main>
+"""
+Generador de manuales HTML (usuario y técnico) para LigaBot.
+"""
+import os
+from .reporter import REPORTES_DIR, _ensure_dir, _base_html
+
+
+def generate_manual_usuario():
+    _ensure_dir()
+    path = os.path.join(REPORTES_DIR, 'Manual_Usuario.html')
+
+    body = """
+<h2>Manual de Usuario - LigaBot Fase 2</h2>
+<p class="meta">Analizador Léxico y Sintáctico con Chatbot de consultas de La Liga</p>
+
+<h3 style="color:#0d3b2e;margin:20px 0 8px">¿Qué es LigaBot?</h3>
+<p>LigaBot es un chatbot académico que recibe comandos escritos, los analiza léxica y
+sintácticamente, y responde con datos reales de partidos de La Liga española (temporadas
+1979-1980 a 2019-2020) consultados desde el archivo <code>LaLigaBot-LFP.csv</code>.</p>
+
+<h3 style="color:#0d3b2e;margin:20px 0 8px">Cómo usar la interfaz</h3>
+<table>
+<thead><tr><th>Elemento</th><th>Función</th></tr></thead>
+<tbody>
+<tr><td><b>Campo de texto</b> (inferior)</td>
+    <td>Escriba el comando completo y presione <b>Enviar</b> o la tecla <b>Enter</b>.</td></tr>
+<tr><td><b>Botón Enviar</b></td>
+    <td>Ejecuta el pipeline léxico -> sintáctico -> consulta CSV -> respuesta.</td></tr>
+<tr><td><b>Área de conversación</b></td>
+    <td>Muestra el historial completo: sus comandos y las respuestas de LigaBot.</td></tr>
+<tr><td><b>Reporte de Tokens</b></td>
+    <td>HTML con todos los tokens reconocidos en la sesión.</td></tr>
+<tr><td><b>Reporte Errores Léxicos</b></td>
+    <td>HTML con errores de caracteres o lexemas inválidos.</td></tr>
+<tr><td><b>Reporte Errores Sintácticos</b></td>
+    <td>HTML con errores de estructura de comandos.</td></tr>
+<tr><td><b>Limpiar Tokens</b></td>
+    <td>Borra los tokens y errores léxicos acumulados.</td></tr>
+<tr><td><b>Limpiar Errores</b></td>
+    <td>Borra los errores sintácticos acumulados.</td></tr>
+</tbody>
+</table>
+
+<h3 style="color:#0d3b2e;margin:20px 0 8px">Comandos disponibles</h3>
+<table>
+<thead><tr><th>Comando</th><th>Sintaxis completa</th><th>Descripción</th></tr></thead>
+<tbody>
+<tr><td><b>RESULTADO</b></td>
+    <td><code>RESULTADO "Local" VS "Visitante" TEMPORADA &lt;AAAA-AAAA&gt;</code></td>
+    <td>Muestra el marcador exacto del partido.</td></tr>
+<tr><td><b>JORNADA</b></td>
+    <td><code>JORNADA N TEMPORADA &lt;AAAA-AAAA&gt; [-f "nombre"]</code></td>
+    <td>Genera un reporte HTML con todos los partidos de la jornada.</td></tr>
+<tr><td><b>GOLES LOCAL</b></td>
+    <td><code>GOLES LOCAL "Equipo" TEMPORADA &lt;AAAA-AAAA&gt;</code></td>
+    <td>Total de goles anotados como local.</td></tr>
+<tr><td><b>GOLES VISITANTE</b></td>
+    <td><code>GOLES VISITANTE "Equipo" TEMPORADA &lt;AAAA-AAAA&gt;</code></td>
+    <td>Total de goles anotados como visitante.</td></tr>
+<tr><td><b>GOLES TOTAL</b></td>
+    <td><code>GOLES TOTAL "Equipo" TEMPORADA &lt;AAAA-AAAA&gt;</code></td>
+    <td>Total de goles (local + visitante).</td></tr>
+<tr><td><b>TABLA</b></td>
+    <td><code>TABLA TEMPORADA &lt;AAAA-AAAA&gt; [-f "nombre"]</code></td>
+    <td>Genera tabla de clasificación ordenada por puntos.</td></tr>
+<tr><td><b>PARTIDOS</b></td>
+    <td><code>PARTIDOS "Equipo" TEMPORADA &lt;AAAA-AAAA&gt; [-f "nombre"] [-ji N] [-jf N]</code></td>
+    <td>Genera reporte de partidos del equipo con filtro opcional por jornada.</td></tr>
+<tr><td><b>TOP SUPERIOR</b></td>
+    <td><code>TOP SUPERIOR TEMPORADA &lt;AAAA-AAAA&gt; [-n N]</code></td>
+    <td>Muestra los N primeros equipos (defecto 5).</td></tr>
+<tr><td><b>TOP INFERIOR</b></td>
+    <td><code>TOP INFERIOR TEMPORADA &lt;AAAA-AAAA&gt; [-n N]</code></td>
+    <td>Muestra los N últimos equipos (defecto 5).</td></tr>
+<tr><td><b>ADIOS</b></td>
+    <td><code>ADIOS</code></td>
+    <td>Finaliza la sesión del chatbot.</td></tr>
+</tbody>
+</table>
+
+<h3 style="color:#0d3b2e;margin:20px 0 8px">Ejemplos de comandos y respuestas esperadas</h3>
+<table>
+<thead><tr><th>Comando ingresado</th><th>Respuesta esperada</th></tr></thead>
+<tbody>
+<tr><td><code>RESULTADO "Betis" VS "Rayo Vallecano" TEMPORADA &lt;1979-1980&gt;</code></td>
+    <td>LigaBot: El resultado de este partido fue: Betis 1 - 2 Rayo Vallecano.</td></tr>
+<tr><td><code>GOLES LOCAL "Betis" TEMPORADA &lt;1979-1980&gt;</code></td>
+    <td>LigaBot: Los goles anotados por el Betis en local en la temporada 1979-1980 fueron 26.</td></tr>
+<tr><td><code>GOLES TOTAL "Betis" TEMPORADA &lt;1979-1980&gt;</code></td>
+    <td>LigaBot: Los goles anotados por el Betis en total en la temporada 1979-1980 fueron 39.</td></tr>
+<tr><td><code>TOP SUPERIOR TEMPORADA &lt;1979-1980&gt; -n 3</code></td>
+    <td>LigaBot: El top superior... 1. Real Madrid  2. Real Sociedad  3. Sporting de Gijón</td></tr>
+<tr><td><code>TOP INFERIOR TEMPORADA &lt;1979-1980&gt; -n 3</code></td>
+    <td>LigaBot: El top inferior... 1. Burgos  2. CD Málaga  3. Rayo Vallecano</td></tr>
+<tr><td><code>JORNADA 1 TEMPORADA &lt;1979-1980&gt; -f "jornada_1"</code></td>
+    <td>LigaBot: Generando archivo de resultados... (abre reporte HTML)</td></tr>
+<tr><td><code>TABLA TEMPORADA &lt;1979-1980&gt;</code></td>
+    <td>LigaBot: Generando tabla de posiciones... (abre reporte HTML)</td></tr>
+<tr><td><code>PARTIDOS "Betis" TEMPORADA &lt;1979-1980&gt; -ji 1 -jf 5</code></td>
+    <td>LigaBot: Generando reporte de partidos... (abre reporte HTML)</td></tr>
+<tr><td><code>ADIOS</code></td>
+    <td>LigaBot: ADIOS</td></tr>
+<tr><td><code>resultado$ "equipo"</code></td>
+    <td>2 tokens (RESULTADO + CADENA), 1 error ($)</td></tr>
+</tbody>
+</table>
+
+<h3 style="color:#0d3b2e;margin:20px 0 8px">Banderas opcionales</h3>
+<table>
+<thead><tr><th>Bandera</th><th>Argumento</th><th>Aplica en</th><th>Efecto</th></tr></thead>
+<tbody>
+<tr><td><code>-f</code></td><td><code>"nombre"</code></td>
+    <td>JORNADA, TABLA, PARTIDOS</td>
+    <td>Nombre del archivo HTML generado (sin extensión).</td></tr>
+<tr><td><code>-n</code></td><td><code>N</code></td>
+    <td>TOP SUPERIOR / INFERIOR</td>
+    <td>Cantidad de equipos a mostrar (defecto 5).</td></tr>
+<tr><td><code>-ji</code></td><td><code>N</code></td>
+    <td>PARTIDOS</td>
+    <td>Jornada inicial del filtro (inclusivo).</td></tr>
+<tr><td><code>-jf</code></td><td><code>N</code></td>
+    <td>PARTIDOS</td>
+    <td>Jornada final del filtro (inclusivo).</td></tr>
+</tbody>
+</table>
+
+<hr style="margin:30px 0;border-color:#cde3d4">
+<h2 style="color:#0d3b2e">Vista previa de los reportes generados</h2>
+<p style="color:#555;font-size:.9rem;margin-bottom:18px">
+Los reportes HTML se abren automáticamente en el navegador después de ejecutar el comando
+correspondiente. A continuación se muestran ejemplos con datos reales de la temporada
+1979-1980.</p>
+
+<h3 style="color:#0d3b2e;margin:20px 0 8px">Reporte de Jornada</h3>
+<p style="color:#666;font-size:.88rem">
+  Comando: <code>JORNADA 1 TEMPORADA &lt;1979-1980&gt;</code></p>
+<div style="margin:10px 0 28px;text-align:center">
+  <img src="../assets/jornada_f2.png" alt="Reporte Jornada"
+       style="max-width:100%;border-radius:8px;box-shadow:0 2px 12px rgba(0,0,0,.12);
+              border:1px solid #cde3d4">
+</div>
+
+<h3 style="color:#0d3b2e;margin:20px 0 8px">Tabla de Posiciones</h3>
+<p style="color:#666;font-size:.88rem">
+  Comando: <code>TABLA TEMPORADA &lt;1979-1980&gt;</code></p>
+<div style="margin:10px 0 28px;text-align:center">
+  <img src="../assets/tabla_posiciones_f2.png" alt="Tabla de Posiciones"
+       style="max-width:100%;border-radius:8px;box-shadow:0 2px 12px rgba(0,0,0,.12);
+              border:1px solid #cde3d4">
+</div>
+
+<h3 style="color:#0d3b2e;margin:20px 0 8px">Partidos por Equipo</h3>
+<p style="color:#666;font-size:.88rem">
+  Comando: <code>PARTIDOS "Betis" TEMPORADA &lt;1979-1980&gt; -ji 1 -jf 10</code></p>
+<div style="margin:10px 0 28px;text-align:center">
+  <img src="../assets/partidos_f2.png" alt="Partidos por Equipo"
+       style="max-width:100%;border-radius:8px;box-shadow:0 2px 12px rgba(0,0,0,.12);
+              border:1px solid #cde3d4">
+</div>
+
+<h3 style="color:#0d3b2e;margin:20px 0 8px">Reporte de Errores Sintácticos</h3>
+<p style="color:#666;font-size:.88rem">
+  Botón: <b>Reporte Errores Sintácticos</b> - se genera cuando hay comandos con errores de estructura.</p>
+<div style="margin:10px 0 16px;text-align:center">
+  <img src="../assets/errores_sintacticos_f2.png" alt="Errores Sintácticos"
+       style="max-width:100%;border-radius:8px;box-shadow:0 2px 12px rgba(0,0,0,.12);
+              border:1px solid #f5c6cb">
+</div>
+"""
+    with open(path, 'w', encoding='utf-8') as f:
+        f.write(_base_html('Manual de Usuario - LigaBot', body))
+    return path
+
+
+def generate_manual_tecnico():
+    _ensure_dir()
+    path = os.path.join(REPORTES_DIR, 'Manual_Tecnico.html')
+
+    body = """
 <h2>Manual Tecnico - LigaBot Fase 1</h2>
 <p class="meta">Descripción técnica del analizador léxico</p>
 
@@ -88,7 +232,7 @@ en cada iteración se evalúa el par (estado, carácter) y se avanza al estado s
     Retorna <code>None</code> al llegar al EOF.</td></tr>
 <tr><td><code>_advance()</code></td>
     <td>Consume el carácter actual, actualiza <code>fila</code>/<code>columna</code>
-    y lo retorna. Incrementa fila si el carácter es <code>\n</code>.</td></tr>
+    y lo retorna. Incrementa fila si el carácter es <code>\\n</code>.</td></tr>
 <tr><td><code>_emit(lexema, tipo, fila, col)</code></td>
     <td>Añade un <code>Token</code> a la lista de tokens reconocidos.</td></tr>
 <tr><td><code>_emit_error(lexema, desc, fila, col)</code></td>
@@ -115,7 +259,7 @@ en cada iteración se evalúa el par (estado, carácter) y se avanza al estado s
 <h3 style="color:#0d3b2e;margin:20px 0 8px">Registro de posición</h3>
 <p>El lexer mantiene las variables <code>self.fila</code> y <code>self.columna</code>.
 Cada llamada a <code>_advance()</code> actualiza ambas: si el carácter consumido es
-<code>\n</code>, la fila incrementa y la columna se reinicia a 1; en otro caso solo
+<code>\\n</code>, la fila incrementa y la columna se reinicia a 1; en otro caso solo
 la columna incrementa.</p>
 
 <h3 style="color:#0d3b2e;margin:20px 0 8px">Flujo de datos</h3>
@@ -260,7 +404,7 @@ usando datos de la temporada 1979-1980.</p>
 
 <p style="color:#0d3b2e;font-weight:600;margin:16px 0 6px">1. Reporte de Jornada</p>
 <div style="margin:0 0 24px;text-align:center">
-  <img src="../jornada_f2.png" alt="Reporte de Jornada"
+  <img src="../assets/jornada_f2.png" alt="Reporte de Jornada"
        style="max-width:100%;border-radius:8px;box-shadow:0 2px 12px rgba(0,0,0,.12);
               border:1px solid #cde3d4">
   <p style="color:#888;font-size:.82rem;margin-top:6px">
@@ -270,7 +414,7 @@ usando datos de la temporada 1979-1980.</p>
 
 <p style="color:#0d3b2e;font-weight:600;margin:16px 0 6px">2. Tabla de Posiciones</p>
 <div style="margin:0 0 24px;text-align:center">
-  <img src="../tabla_posiciones_f2.png" alt="Tabla de Posiciones"
+  <img src="../assets/tabla_posiciones_f2.png" alt="Tabla de Posiciones"
        style="max-width:100%;border-radius:8px;box-shadow:0 2px 12px rgba(0,0,0,.12);
               border:1px solid #cde3d4">
   <p style="color:#888;font-size:.82rem;margin-top:6px">
@@ -280,7 +424,7 @@ usando datos de la temporada 1979-1980.</p>
 
 <p style="color:#0d3b2e;font-weight:600;margin:16px 0 6px">3. Partidos por Equipo</p>
 <div style="margin:0 0 24px;text-align:center">
-  <img src="../partidos_f2.png" alt="Partidos por Equipo"
+  <img src="../assets/partidos_f2.png" alt="Partidos por Equipo"
        style="max-width:100%;border-radius:8px;box-shadow:0 2px 12px rgba(0,0,0,.12);
               border:1px solid #cde3d4">
   <p style="color:#888;font-size:.82rem;margin-top:6px">
@@ -290,12 +434,13 @@ usando datos de la temporada 1979-1980.</p>
 
 <p style="color:#0d3b2e;font-weight:600;margin:16px 0 6px">4. Reporte de Errores Sintacticos</p>
 <div style="margin:0 0 16px;text-align:center">
-  <img src="../errores_sintacticos_f2.png" alt="Errores Sintacticos"
+  <img src="../assets/errores_sintacticos_f2.png" alt="Errores Sintacticos"
        style="max-width:100%;border-radius:8px;box-shadow:0 2px 12px rgba(0,0,0,.12);
               border:1px solid #f5c6cb">
   <p style="color:#888;font-size:.82rem;margin-top:6px">
     Boton "Reporte Errores Sintacticos" - token recibido, token esperado, fila y columna</p>
 </div>
-</main>
-</body>
-</html>
+"""
+    with open(path, 'w', encoding='utf-8') as f:
+        f.write(_base_html('Manual Técnico - LigaBot', body))
+    return path
